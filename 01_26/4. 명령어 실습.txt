@@ -1,0 +1,18 @@
+--(주석)
+create user 아이디명
+identified by 비번
+default tablespace users;
+
+
+--scott / tiger 로 사용자 생성 
+create user scott 
+identified by tiger
+default tablespace users;
+
+--사용자에게 접속 권한 부여
+grant connect, resource to scott;
+
+--사용자가 잘 연결되어있는지 확인   // conn 하고 엔터쳐도 됨
+conn scott/tiger
+
+

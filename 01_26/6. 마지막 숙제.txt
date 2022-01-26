@@ -1,0 +1,10 @@
+1. 관계형 DBMS(가 무엇인지) , 
+2. table , entity, attribute, relationship 
+3. field, tuple
+4. primary key, foreign key, super key
+5. 유일성, 최소성
+6. 기본키 & 외래키 제약사항
+7. 테이블 생성 명령어, 데이터 삽입 을 하여 테이블을 완성
+   (데이터는 각자 5개씩 입력)
+   student(no number, name varchar2(10), dno number ) : 기본키(no)
+   department(dno number, dname varchar2(15) ) : 기본키(dno)

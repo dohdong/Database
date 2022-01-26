@@ -1,0 +1,206 @@
+conn scott/tiger
+
+-- emp, dept, salgrade 테이블 생성
+-- 부모부터 생성, 삭제는 자식부터
+
+// emp , dept를 보면 emp에 deptno 가 있는걸로 보아 dept가 emp의 부모임. 
+// dept가 있어야 emp에 deptno를 넣을수 있으므로.
+
+-- 1) dept 생성.
+create table 테이블이름
+(  필드이름 타입..... );
+
+create table dept 
+( deptno number(2) constraint pk_dept primary key,                   -- contraint = 제약사항 , 
+  dname varchar2(15),
+  loc varchar2(13) );					-- 오라클은 대소문자 구별x  , " " 사용x 
+
+
+-- 2) emp 생성
+create table emp
+( EMPNO number(4) constraint pk_dept2 primary key, 
+  ENAME varchar2(10),
+  JOB   varchar2(9),
+  MGR number(4),
+  HIREDATE date,
+  SAL number(7,2),						
+  COMM number(7,2),
+  DEPTNO number(2),
+  constraint fk_dept2 foreign key(deptno) references dept(deptno) ); 
+
+
+					--  SAL number(7,2),	-- 2자리 소수점을 포함하는 7자리 숫자
+  			 		--constraint fk_dept foreign key(deptno) references dept(deptno) );
+					 -- 제약사항 fk_dept 외래키 (deptno) 참조 dept(deptno)
+-- 실행할때 함부로 주석이 붙어있으면 안됨 ㅠㅜ
+
+				-- 이따 할때는 PK_EMP(emp에서 pk_dept2를) 랑 FK_dept(fk_dept2를) 로 하자.
+
+-- 테이블 구조 보기
+desc 테이름;
+
+						삭제할때는 아래를 이용
+						alter table emp 
+						drop constraint pk_dept;
+
+--3) sal grade 생성
+create table salgrade
+( grade number,
+  losal number,
+  hisal number ) ;
+
+
+-- 디스크에 기록은  > commit; 
+
+-- spool 설정
+spool 경로명\파일이름.txt
+
+spool c:\temp\db_0126.txt
+
+-- spool 을 했으면 off 를 반드시 해주어야함. 하지 않으면 메모장에 내용이 사라진다. 
+-- 오라클을 종료하기 전에 show spool 로 확인을 하고 spool off 를 해주어야한다.
+
+
+-- point1 테이블 생성 ( no number, name varchar2(10) )
+-- point2 테이블 생성 ( no 를 기본키로 설정) ( no number, name varchar2(10) )
+
+create table point1
+( no number,
+  name varchar2(10) ) ;
+
+create table point2
+( no number constraint pk_no primary key,
+ name varchar2(10) ) ;
+
+-- 제약사항 보기
+select constraint_name, constraint_type
+from all_constraints
+where table_name in ('DEPT','EMP');
+
+이때 CO 의 R은 reference의 R 이다.  P는 Primary key 의 약자.
+
+-- point1, point2 제약사항 보기.
+select constraint_name, constraint_type
+from all_constraints
+where table_name in ('POINT1','POINT2');
+
+
+create table test 
+( no number primary key,
+  name varchar2(10) );
+
+select constraint_name, constraint_type
+from all_constraints
+where table_name in ('TEST');
+
+select constraint_name, constraint_type
+from all_constraints
+where table_name in('TEST');
+
+
+
+-- point1 , 데이터 삽입
+insert into 테이름 values 
+( 데이터... )
+--1)
+insert into point1 values
+( 111, 'kim' );
+--2)
+insert into point1 values
+( 111, 'lee' );
+
+
+-- 데이터 출력
+select 필드리스트
+from 테이름;
+
+select no, name
+from point1;
+
+
+--* : all 을 의미
+select *
+from point1;
+
+insert into point1 values
+( 222, 'park' );
+
+
+insert into point2 values
+( 111, 'lee' );   
+
+insert into point2 values    -- 같은 숫자를 넣으니까 오류가 남. 아까 그 constraint 설정을 안해줘서 그런가봄.
+( 111, 'lee' );       
+
+insert into point2 values
+( 222, 'lee' );
+insert into point2 values
+( 333, 'lee' );
+
+
+-- 이런 자료들은 무조건 1개씩 넣어야함 방법이 없음.
+
+insert into dept values 
+(10, 'ACCOUNTING', 'NEW YORK');
+insert into dept values
+(20, 'RESEARCH', 'DALLAS');
+insert into dept values
+(30, 'SALES', 'CHICAGO');
+insert into dept values
+(40, 'OPERATIONS', 'BOSTON');
+
+select *
+from dept;
+
+
+-- 위의 부모 데이터를 먼저 넣고 그 이후에 자식에 데이터를 넣어야 맞게 들어감..
+-- 데이터 10개.
+insert into emp values
+(7369, 'SMITH', 'CLERK' ,7902 , '1980/12/17' ,'800' , null, 20);
+
+insert into emp values
+(7499, 'ALLEN' , 'SALESMAN' , 7698 , '1981-2-20', 1600 , 300, 10) ;
+
+insert into emp values
+(7521, 'WARD' , 'SALESMAN', 7698, '1981-2-22', 1259, 500, 30) ;
+
+insert into emp values
+(7566, 'JONES' , 'MANAGER' , 7839, '1981-4-02', 2975,null, 20);
+
+insert into emp values
+(7654, 'MARTIN' , 'SALESMAN' , 7698, '1981-9-28' , 1250, 1400, 30);
+
+insert into emp values
+(7698, 'BLAKE', 'MANAGER', 7839, '1981-05-01' , 2850, null, 30);
+
+insert into emp values
+(7782, 'CLARK' , 'MANAGER', 7839, '1981-06-09' , 2450, null, 10);
+
+insert into emp values
+(7788, 'SCOTT', 'ANALYST' , 7566 , '1987-04-19' , 3000, null, 20);
+
+insert into emp values
+(7839 , 'KING' , 'PRESIDENT' , null, '1981-11-17', 5000 , null, 10);
+
+insert into emp values
+(7844, 'TURNER' , 'SALESMAN' , 7698 , '1981-09-08', 1500, 0, 30);
+
+--spool off
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
