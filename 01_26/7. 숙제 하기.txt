@@ -1,0 +1,105 @@
+
+1. 관계형 DBMS란?
+흔히 쓰이는 관계형 데이터 모델 개념을 바탕으로 데이터를 저장, 관리하는 데이터베이스를 의미함.
+
+
+2. table , entity, attribute, relationship 
+table =  관계형 데이터베이스는 기본적으로 데이터를 2차원 표 형태로 저장하고 관리한다. 이때 표 형태의 데이터 저장공간을 테이블 이라고 한다.
+entity = 개체, 사원entity, 부서entity 라고 말한다. 
+구체적으로 특정해서 말을 할때 entity를 쓰고, 그냥 통칭할때 table을 쓰는 느낌
+attribute = 속성, 데이터의 열 에 해당하며, attribute라고 함. 24p 에 사원entity 같은 경우에는 4개의 attribute를 가지고 있으므로 차수는 4이다.
+relationship = 관계,  개체와 개체 또는 속성간의 연관성을 나타내기 위해 사용. 외래키 등으로 구현하는 것을 생각해보면 될듯.
+
+
+3. field, tuple
+field = attribute
+tuple = 행을 의미한다.
+
+
+4. primary key, foreign key, super key
+primary key = 기본키 는 가장 중요하다. 기본키의 속성으로는 1. 테이블에 저장된 행을 식별할 수 있는 유일한 값이어야한다. 2. 값의 중복이 없어야 한다. 3. NULL값을 가질 수 없다. 
+foreign key = 외래키 는 특정 테이블에 포함되어 다른 테이블의 *기본키로 저장된 키를 의미합니다.
+super key = 한 릴레이션 내에 있는 속성들의 집합으로 구성된 키. 유일성은 만족하지만 최소성은 만족시키지 못함.
+
+
+5. 유일성, 최소성
+유일성 = 하나의 키 값으로 튜플을 유일하게 식별할수 있는 성질. (기본키 값인듯)
+최소성 = 키를 구성하는 속성들 중 꼭 필요한 최소한의 속성들로만 키를 구성하는 성질.. 
+예를 들어 (주민번호,이름,나이) 이렇게 있을때 이름,나이 를 빼고도 각 튜플을 유일하게 식별할 수 있다. 이때 
+이름,나이 를 빼면 해당 키는 최소성을 만족한다~.
+
+
+6. 기본키 & 외래키 제약사항
+기본키 constraint pk_dept primary key
+외래키 constraint fk_dept2 foreign key(deptno) references dept(deptno)
+
+
+7. 테이블 생성 명령어, 데이터 삽입 을 하여 테이블을 완성
+   (데이터는 각자 5개씩 입력)
+   student(no number, name varchar2(10), dno number ) : 기본키(no)
+   department(dno number, dname varchar2(15) ) : 기본키(dno)
+
+create table student 
+( no number constraint pk_student primary key,
+  name varchar2(10),
+  dno number,
+  constraint fk_department foreign key(dno) references department(dno) );
+
+create table department
+( dno number constraint pk_department primary key, 
+  dname varchar2(15) );
+
+insert into department values
+( 1 , 'PARK' );
+insert into department values
+( 2 , 'SEONG' );
+insert into department values
+( 3 , 'BIN' );
+insert into department values
+( 4 , 'NO' );
+insert into department values
+( 5 , 'HYEON' );
+
+select *
+from department;
+
+
+insert into student values 
+( 111, 'MIN' , 1);
+insert into student values 
+( 222, 'LEE' , 2);
+insert into student values 
+( 333, 'SEONG' , 3);
+insert into student values 
+( 444, 'HOON' , 3);
+insert into student values 
+( 555, 'KIM' , 5);
+
+select *
+from student;
+
+
+       DNO DNAME
+---------- ------------------------------
+         1 PARK
+         2 SEONG
+         3 BIN
+         4 NO
+         5 HYEON
+
+      NO NAME                        DNO
+---------- -------------------- ----------
+       111 MIN                           1
+       222 LEE                            2
+       333 SEONG                       3
+       444 HOON                        3
+       555 KIM                           5
+
+
+
+
+
+
+
+
+

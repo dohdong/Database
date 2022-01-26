@@ -101,7 +101,7 @@ where table_name in('TEST');
 
 -- point1 , 데이터 삽입
 insert into 테이름 values 
-( 데이터... )
+( 데이터... );
 --1)
 insert into point1 values
 ( 111, 'kim' );
@@ -129,7 +129,7 @@ insert into point1 values
 insert into point2 values
 ( 111, 'lee' );   
 
-insert into point2 values    -- 같은 숫자를 넣으니까 오류가 남. 아까 그 constraint 설정을 안해줘서 그런가봄.
+insert into point2 values    -- 같은 숫자를 넣으니까 오류가 남. 아까 그 constraint 설정을 해줘서 그렇다!
 ( 111, 'lee' );       
 
 insert into point2 values
