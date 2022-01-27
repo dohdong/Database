@@ -1,0 +1,48 @@
+-- 출력 조정 명령 (column 이용) 
+-- 문자는 a, 숫자는 9
+-- 이 칼럼 명령은 오라클을 실행하고 있을때만 됨. 
+
+
+set linesize 250;
+set pagesize 30;
+
+-- dept
+col deptno format 99
+col dname format a13
+col loc format a10
+
+-- emp  (deptno는 위에서 이미했으므로 안해도된다.)
+col empno format 99999
+col ename format a10
+col job format a9
+col mgr format 99999
+col hiredate format a10
+col sal format 999999
+col comm format 999999
+
+-- salgrade
+col grade format 999999
+col losal format 999999
+col hisal format 999999
+
+
+-- 어제 한 숙제 예쁘게 만들기 
+
+--student
+col no format 9999
+col name format a10
+
+--department
+col dno format 9999
+col dname format a15
+
+
+
+
+
+
+
+
+
+
+

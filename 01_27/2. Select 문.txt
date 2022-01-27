@@ -1,0 +1,117 @@
+select *
+from emp;
+
+
+select empno, ename 
+from emp;
+
+--이렇게 주석을 앞에 달고 그 밑에 내용들을 적어주는 것이 나중에 볼 때도 유용해보임.
+--중복을 제거한 사원들의 부서 번호를 알 수 있음.
+select distinct deptno
+from emp;
+
+select job from emp;
+
+--중복이 되므로, distinct를 사용
+select distinct job from emp;
+
+--아래와 같이 쓰면 두개 다 중복인 녀석들이 사라진다. (그래서 8줄이 생성됨)
+select distinct job, deptno 
+from emp;
+
+-- emp 추가 5개
+insert into emp values
+(7876, 'ADAMS', 'CLERK', 7788
+
+-- salgrade 데이터
+insert into salgrade values
+(1, 700, 1200) ;
+insert into salgrade values
+(2, 1201, 1400) ;
+insert into salgrade values
+(3, 1401, 2000) ;
+insert into salgrade values
+(4, 2001, 3000); 
+
+select * from salgrade;
+
+-- emp 전체 행(attribute) 데이터 삭제
+delete 
+from emp;
+
+-- emp 데이터
+insert into emp values
+(7369, 'SMITH', 'CLERK',     7902,  '1980/12/17',  800, null, 20);
+insert into emp values
+(7499, 'ALLEN',  'SALESMAN', 7698,  '1981-2-20',  1600, 300,  10);
+insert into emp values
+(7521, 'WARD',   'SALESMAN', 7698,  '1981-2-22',  1259, 500,  30);
+insert into emp values
+(7566, 'JONES',  'MANAGER',  7839,  '1981-4-02',  2975, null, 20);
+insert into emp values
+(7654, 'MARTIN', 'SALESMAN', 7698,  '1981-9-28',  1250, 1400, 30);
+insert into emp values
+(7698, 'BLAKE',  'MANAGER',  7839,  '1981-05-01',  2850, null, 30);
+insert into emp values
+(7782, 'CLARK',  'MANAGER',  7839,  '1981-06-09',  2450, null, 10);
+insert into emp values
+(7788, 'SCOTT',  'ANALYST',  7566,  '1987-04-19',  3000, null, 20);
+insert into emp values
+(7839, 'KING',   'PRESIDENT', null, '1981-11-17',  5000, null, 10);
+insert into emp values
+(7844, 'TURNER', 'SALESMAN',  7698, '1981-09-08', 1500,   0 , 30);
+insert into emp values
+(7876, 'ADAMS',  'CLERK',     7788, '1987-05-23', 1100, null, 20);
+insert into emp values
+(7900, 'JAMES',  'CLERK',     7698, '1981-12-03',  950, null, 30);
+insert into emp values
+(7902, 'FORD',   'ANALYST',   7566, '1981-12-03',  3000, null, 20);
+insert into emp values
+(7934, 'MILLER', 'CLERK',     7782, '1982-01-23',  1300, null, 10);
+
+
+select ALL job, deptno
+from emp;
+select distinct job,deptno
+from emp;
+
+
+--별칭. alias
+select ename, sal, sal*12+comm
+from emp;
+--별칭. alias
+select ename, sal, sal*12+comm annsal
+from emp;
+
+
+--오름차순, 내림차순
+select [  ]
+from [ ]
+...
+order by [ 정렬하려는 열 이름] [ 정렬 옵션 ];
+
+-- 4-12 오름차순 (asc 를 안써도 오름차순이다.)
+select *
+from emp
+order by sal asc;
+
+-- 4-13 내림차순
+select *
+from emp
+order by sal desc;
+
+-- 4-14 
+-- sal 는 내림차순, deptno 는 오름차순 
+-- deptno 를 먼저 해서 deptno 가 같은 애들중에 sal 이 내림차순임
+select * 
+from emp
+order by deptno asc, sal desc ;
+
+
+
+
+
+
+
+
+

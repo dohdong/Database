@@ -1,0 +1,12 @@
+DML 조작어  ,  DDL  정의어  ,   DCL   제어어 가 있다.
+
+DML = query (쿼리, 질의어) 쿼리와 같은 조작어들은 db의 내용을 바꾸지 않음. 예) select * from emp where ~~ 등등
+(내용을 바꾼 것도 DML..? update 같은거?)
+
+
+DDL 명령어는 commit을 안해도 됨. 예) create table.  
+				alter table -> 구조를 바꿈.
+
+대부분의 DCL 은 관리자가 할 수 있는것들. 예) grant 등등 
+
+

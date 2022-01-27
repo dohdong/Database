@@ -1,0 +1,253 @@
+관계형 데이터베이스는 입력도 테이블이고, 출력도 테이블 이다.
+
+-- 5-2 부서번호가 30인 데이터만 출력.
+select *
+from emp
+where deptno = 30;
+
+-- 5-3 부서번호가 30, 영업사원 출력
+select * 
+from emp
+where deptno =30 and job = 'SALESMAN';
+
+-- 5-4 OR 연산자
+select *
+from emp
+where deptno = 30 or job = 'CLERK' ; 
+
+-- 5-5 연봉이 36000인 사원 출력
+select * 
+from emp
+where sal * 12 = 36000;
+
+-- 5-6 급여가 3000 이상인 사원을 출력
+select * 
+from emp
+where sal >= 3000;
+
+-- 5-7
+select * 
+from emp
+where ename >= 'F';
+
+-- 5-8
+select * 
+from emp
+where ename >= 'FORZ';
+
+-- 5-9 
+select * 
+from emp
+where sal != 3000;
+
+-- 5-10 
+select * 
+from emp
+where sal <> 3000;
+
+-- 5-11
+select * 
+from emp
+where sal ^= 3000;
+
+-- 3개다 값이 다를경우 true 같을경우 false 를 반환합니다.
+
+-- 5-12
+select * 
+from emp
+where sal = 3000;
+
+-- 5-12 -2
+select * 
+from emp
+where not sal = 3000;
+-- 논리 부정 연산자 입니다.
+
+-- 5-13 manager, salesman, clerk 인 사원을 출력
+select *
+from emp
+where job = 'MANAGER'
+or job = 'SALESMAN'
+or job = 'CLERK' ;
+
+-- 5-14 하나라도 만족하는게 있으면 전부 보여줌
+select *
+from emp
+where job in ('MANAGER', 'SALESMAN', 'CLERK') ;
+
+
+	-- SQL 은 위에서부터 차례차레 실행하는 것이 아님.
+	예를 들어 1. emp 실행, 2. 조건문 실행 해서 테이블을 만들어내고 
+	그 이후에 select * 이면 전부, 뭐 특정 attribute 원하면 특정만 출력하는 방식.
+	그것이 입력도 테이블이고 결과도 테이블이라는 뜻. 
+
+
+-- 5-15  manager, salesman, clerk 이 아닌것 출력
+select *
+from emp
+where job  != 'MANAGER' 
+and job <> 'SALESMAN'
+and job ^= 'CLERK' ;
+
+-- 5-16
+select *
+from emp
+where job not in ('MANAGER', 'SALESMAN', 'CLERK') ;
+
+
+-- 5-17  급여가 2000~ 3000인 사원을 출력
+select * 
+from emp
+where sal >= 2000
+and sal <= 3000;
+
+
+-- 5-18 
+select * 
+from emp
+where sal between 2000 and 3000;
+
+-- 5-19 급여가 2000~ 3000 범위 밖에 있는 것들 출력
+select * 
+from emp
+where sal not between 2000 and 3000;
+
+-- 5-20 패턴비교 연산자(like)  
+-- _ : 한문자, % : 모든 문자에 대응
+select * 
+from emp
+where ename like 'S_';
+
+query(쿼리, 질의어)
+create table~~
+grant 
+
+-- 이름이 s로 끝나는 사람을 알고싶어
+select * 
+from emp
+where ename like '%S';
+
+-- 이름에 a가 들어간 사람을 알고싶어
+select * 
+from emp
+where ename like '%A%';
+
+-- 5-21 ,22, 23 스킵
+
+
+select ename 사원 이름    -> 공백이 있으면 안됨.
+from emp;
+select ename 사원이름
+from emp;
+
+
+--null 연산자.
+select *
+from emp;
+-- null : 0 이 아님. 값이 정해지지 않았거나 모를때
+-- 5-25
+select *
+from emp
+where comm = null;
+--이러면 에러 , 이렇게 하면 null이 들어있는 문자열을 비교함. 
+
+-- 5-26
+select *
+from emp
+where comm is null;
+
+-- 5-27
+select *
+from emp 
+where comm is not null;
+
+-- 매니저가 null 인 사람 출력
+select *
+from emp 
+where mgr is null;
+
+-- 매니저가 있는 사람 출력
+select *
+from emp 
+where mgr is not null;
+
+-- 5-28 과 29는 서로 연동됨
+select *
+from emp 
+where sal > null
+and comm is null;
+
+-- 5-29
+select *
+from emp 
+where sal > null
+or comm is null;
+
+-- 5-30  union
+select empno, ename, sal, deptno
+from emp
+where deptno = 10
+union
+select empno, ename, sal, deptno
+from emp
+where deptno = 20;
+
+-- 5-31  union
+select empno, ename, sal, deptno
+from emp
+where deptno = 10
+union
+select empno, ename, sal, deptno
+from emp
+where deptno = 10;
+
+--   union
+select empno, ename, sal, deptno
+from emp
+where deptno = 10
+union all
+select empno, ename, sal, deptno
+from emp
+where deptno = 10;
+
+-- 5-36
+-- minus
+--   union
+select empno, ename, sal, deptno
+from emp
+minus
+select empno, ename, sal, deptno
+from emp
+where deptno = 10;
+
+-- 5-37
+select empno, ename, sal, deptno
+from emp
+intersect
+select empno, ename, sal, deptno
+from emp
+where deptno = 10;
+
+-- where 절이 없는경우는 전체 변경
+-- 값 업데이트
+update emp
+set deptno = 30
+where ename = 'ALLEN' ; 
+
+
+-- emp에 age 추가
+alter table emp
+add age number;
+
+update emp
+set age = 30;
+
+-- 필드 삭제
+alter table emp
+drop column age;
+
+
+
+
+
+
