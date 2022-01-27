@@ -1,0 +1,27 @@
+db 설계를 모델링 해주는 툴이 toad
+
+db 설계를 할때 전에 배웠듯이 사원테이블에 무슨 사수 전화번호 이런거 싹다 넣고 하나의 테이블로 만들어서 
+ 돌리면 안된다. 
+
+new 모델 , oracle 11g releas2 
+entity 만들고
+
+Caption은 상관없으니 한글로 만들고, Name 은 영어로 
+add 하고 attribute 누르면 새 창 뜨고 거기서도 Caption 도 부서번호 name은 영어로 deptno , Data Type도 바꿔줌.
+ -> 첫번째 attrubute가 들어간것임. 그리고 기본키니까 primary key도 체크. OK+Add 로 추가하고 또 창 여는느낌
+
+어디에 필요하냐 -> 나중에 구현해서 우리는 이렇게 만들었습니다~ 를 알려주기 위해 사용한다.
+
+
+마찬가지로 부모의 deptno 는 자식의 사원에서 만들어주지 않는다.
+
+1대1 , 1대N , N대N 관계가 있다.
+
+relationship을 하면 외래키가 알아서 들어감. (entity 옆에)
+
+
+
+
+
+
+
