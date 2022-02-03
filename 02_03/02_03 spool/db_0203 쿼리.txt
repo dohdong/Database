@@ -1,0 +1,340 @@
+SQL> show spool
+spool ON
+SQL> set linesize 250;
+SQL> set pagesize 30;
+SQL> 
+SQL> -- dept
+SQL> col deptno format 99
+SQL> col dname format a13
+SQL> col loc format a10
+SQL> 
+SQL> -- emp  (deptno는 위에서 이미했으므로 안해도된다.)
+SQL> col empno format 99999
+SQL> col ename format a10
+SQL> col job format a9
+SQL> col mgr format 99999
+SQL> col hiredate format a10
+SQL> col sal format 999999
+SQL> col comm format 999999
+SQL> 
+SQL> -- salgrade
+SQL> col grade format 999999
+SQL> col losal format 999999
+SQL> col hisal format 999999
+SQL> 
+SQL> 
+SQL> -- 어제 한 숙제 예쁘게 만들기
+SQL> 
+SQL> --student
+SQL> col no format 9999
+SQL> col name format a10
+SQL> 
+SQL> --department
+SQL> col dno format 9999
+SQL> col dname format a15
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> select *
+  2  from emp;
+
+ EMPNO ENAME      JOB          MGR HIREDATE       SAL    COMM DEPTNO                                                                                                                                                                                      
+------ ---------- --------- ------ ---------- ------- ------- ------                                                                                                                                                                                      
+  7369 SMITH      CLERK       7902 80/12/17       800             20                                                                                                                                                                                      
+  7499 ALLEN      SALESMAN    7698 81/02/20      1600     300     30                                                                                                                                                                                      
+  7521 WARD       SALESMAN    7698 81/02/22      1259     500     30                                                                                                                                                                                      
+  7566 JONES      MANAGER     7839 81/04/02      2975             20                                                                                                                                                                                      
+  7654 MARTIN     SALESMAN    7698 81/09/28      1250    1400     30                                                                                                                                                                                      
+  7698 BLAKE      MANAGER     7839 81/05/01      2850             30                                                                                                                                                                                      
+  7782 CLARK      MANAGER     7839 81/06/09      2450             10                                                                                                                                                                                      
+  7788 SCOTT      ANALYST     7566 87/04/19      3000             20                                                                                                                                                                                      
+  7839 KING       PRESIDENT        81/11/17      5000             10                                                                                                                                                                                      
+  7844 TURNER     SALESMAN    7698 81/09/08      1500       0     30                                                                                                                                                                                      
+  7876 ADAMS      CLERK       7788 87/05/23      1100             20                                                                                                                                                                                      
+  7900 JAMES      CLERK       7698 81/12/03       950             30                                                                                                                                                                                      
+  7902 FORD       ANALYST     7566 81/12/03      3000             20                                                                                                                                                                                      
+  7934 MILLER     CLERK       7782 82/01/23      1300             10                                                                                                                                                                                      
+
+14 rows selected.
+
+SQL> select deptno
+  2  from emp
+  3  where ename = 'JONES';
+
+DEPTNO                                                                                                                                                                                                                                                    
+------                                                                                                                                                                                                                                                    
+    20                                                                                                                                                                                                                                                    
+
+SQL> select deptno, empno, ename, sal
+  2  from emp
+  3  where deptno =
+  4  (select deptno
+  5   from emp
+  6   where ename = 'JONES');
+
+DEPTNO  EMPNO ENAME          SAL                                                                                                                                                                                                                          
+------ ------ ---------- -------                                                                                                                                                                                                                          
+    20   7369 SMITH          800                                                                                                                                                                                                                          
+    20   7566 JONES         2975                                                                                                                                                                                                                          
+    20   7788 SCOTT         3000                                                                                                                                                                                                                          
+    20   7876 ADAMS         1100                                                                                                                                                                                                                          
+    20   7902 FORD          3000                                                                                                                                                                                                                          
+
+SQL> select ename, job
+  2  from emp
+  3  where job = (
+  4  select job
+  5  from emp
+  6  where ename = 'JONES');
+
+ENAME      JOB                                                                                                                                                                                                                                            
+---------- ---------                                                                                                                                                                                                                                      
+JONES      MANAGER                                                                                                                                                                                                                                        
+BLAKE      MANAGER                                                                                                                                                                                                                                        
+CLARK      MANAGER                                                                                                                                                                                                                                        
+
+SQL> select ename, job
+  2  from emp
+  3  where sal >
+  4   (select sal
+  5   from emp
+  6   where ename = ‘CLERK’);
+ where ename = ‘CLERK’)
+               *
+ERROR at line 6:
+ORA-00911: invalid character 
+
+
+SQL> select ename, job
+  2  from emp
+  3  where sal >
+  4   (select sal
+  5   from emp
+  6   where ename = ‘CLARK’);
+ where ename = ‘CLARK’)
+               *
+ERROR at line 6:
+ORA-00911: invalid character 
+
+
+SQL> select ename, job
+  2  from emp
+  3  where sal >
+  4    (select sal
+  5    from emp
+  6    where ename = ‘CLARK’);
+  where ename = ‘CLARK’)
+                *
+ERROR at line 6:
+ORA-00911: invalid character 
+
+
+SQL> select *
+  2  from emp;
+
+ EMPNO ENAME      JOB          MGR HIREDATE       SAL    COMM DEPTNO                                                                                                                                                                                      
+------ ---------- --------- ------ ---------- ------- ------- ------                                                                                                                                                                                      
+  7369 SMITH      CLERK       7902 80/12/17       800             20                                                                                                                                                                                      
+  7499 ALLEN      SALESMAN    7698 81/02/20      1600     300     30                                                                                                                                                                                      
+  7521 WARD       SALESMAN    7698 81/02/22      1259     500     30                                                                                                                                                                                      
+  7566 JONES      MANAGER     7839 81/04/02      2975             20                                                                                                                                                                                      
+  7654 MARTIN     SALESMAN    7698 81/09/28      1250    1400     30                                                                                                                                                                                      
+  7698 BLAKE      MANAGER     7839 81/05/01      2850             30                                                                                                                                                                                      
+  7782 CLARK      MANAGER     7839 81/06/09      2450             10                                                                                                                                                                                      
+  7788 SCOTT      ANALYST     7566 87/04/19      3000             20                                                                                                                                                                                      
+  7839 KING       PRESIDENT        81/11/17      5000             10                                                                                                                                                                                      
+  7844 TURNER     SALESMAN    7698 81/09/08      1500       0     30                                                                                                                                                                                      
+  7876 ADAMS      CLERK       7788 87/05/23      1100             20                                                                                                                                                                                      
+  7900 JAMES      CLERK       7698 81/12/03       950             30                                                                                                                                                                                      
+  7902 FORD       ANALYST     7566 81/12/03      3000             20                                                                                                                                                                                      
+  7934 MILLER     CLERK       7782 82/01/23      1300             10                                                                                                                                                                                      
+
+14 rows selected.
+
+SQL> select ename, job
+  2  from emp
+  3  where sal >(
+  4  select sal
+  5  from emp
+  6  where ename = ‘CLARK’);
+where ename = ‘CLARK’)
+              *
+ERROR at line 6:
+ORA-00911: invalid character 
+
+
+SQL> select ename, job
+  2  from emp
+  3  where sal >(
+  4  select sal
+  5  from emp
+  6  where ename ='CLARK');
+
+ENAME      JOB                                                                                                                                                                                                                                            
+---------- ---------                                                                                                                                                                                                                                      
+JONES      MANAGER                                                                                                                                                                                                                                        
+BLAKE      MANAGER                                                                                                                                                                                                                                        
+SCOTT      ANALYST                                                                                                                                                                                                                                        
+KING       PRESIDENT                                                                                                                                                                                                                                      
+FORD       ANALYST                                                                                                                                                                                                                                        
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal <
+  4   (select avg(sal)
+  5   from emp);
+
+ENAME          SAL                                                                                                                                                                                                                                        
+---------- -------                                                                                                                                                                                                                                        
+SMITH          800                                                                                                                                                                                                                                        
+ALLEN         1600                                                                                                                                                                                                                                        
+WARD          1259                                                                                                                                                                                                                                        
+MARTIN        1250                                                                                                                                                                                                                                        
+TURNER        1500                                                                                                                                                                                                                                        
+ADAMS         1100                                                                                                                                                                                                                                        
+JAMES          950                                                                                                                                                                                                                                        
+MILLER        1300                                                                                                                                                                                                                                        
+
+8 rows selected.
+
+SQL> select min(ename)
+  2     from emp
+  3     group by deptno;
+
+MIN(ENAME)                                                                                                                                                                                                                                                
+--------------------                                                                                                                                                                                                                                      
+ALLEN                                                                                                                                                                                                                                                     
+ADAMS                                                                                                                                                                                                                                                     
+CLARK                                                                                                                                                                                                                                                     
+
+SQL> select ename, sal, deptno
+  2  from emp
+  3  where ename =
+  4   ( select min(ename)
+  5     from emp
+  6     group by deptno );
+ ( select min(ename)
+   *
+ERROR at line 4:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename, sal, deptno
+  2  from emp
+  3  where ename =
+  4   (select min(ename)
+  5     from emp
+  6     group by deptno );
+ (select min(ename)
+  *
+ERROR at line 4:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename, sal, deptno
+  2  from emp
+  3  where ename in
+  4   (select min(ename)
+  5     from emp
+  6     group by deptno );
+
+ENAME          SAL DEPTNO                                                                                                                                                                                                                                 
+---------- ------- ------                                                                                                                                                                                                                                 
+ALLEN         1600     30                                                                                                                                                                                                                                 
+CLARK         2450     10                                                                                                                                                                                                                                 
+ADAMS         1100     20                                                                                                                                                                                                                                 
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > any
+  4   (select sal from emp
+  5   where deptno = 30);
+
+ENAME          SAL                                                                                                                                                                                                                                        
+---------- -------                                                                                                                                                                                                                                        
+KING          5000                                                                                                                                                                                                                                        
+FORD          3000                                                                                                                                                                                                                                        
+SCOTT         3000                                                                                                                                                                                                                                        
+JONES         2975                                                                                                                                                                                                                                        
+BLAKE         2850                                                                                                                                                                                                                                        
+CLARK         2450                                                                                                                                                                                                                                        
+ALLEN         1600                                                                                                                                                                                                                                        
+TURNER        1500                                                                                                                                                                                                                                        
+MILLER        1300                                                                                                                                                                                                                                        
+WARD          1259                                                                                                                                                                                                                                        
+MARTIN        1250                                                                                                                                                                                                                                        
+ADAMS         1100                                                                                                                                                                                                                                        
+
+12 rows selected.
+
+SQL> select *
+  2  from emp;
+
+ EMPNO ENAME      JOB          MGR HIREDATE       SAL    COMM DEPTNO                                                                                                                                                                                      
+------ ---------- --------- ------ ---------- ------- ------- ------                                                                                                                                                                                      
+  7369 SMITH      CLERK       7902 80/12/17       800             20                                                                                                                                                                                      
+  7499 ALLEN      SALESMAN    7698 81/02/20      1600     300     30                                                                                                                                                                                      
+  7521 WARD       SALESMAN    7698 81/02/22      1259     500     30                                                                                                                                                                                      
+  7566 JONES      MANAGER     7839 81/04/02      2975             20                                                                                                                                                                                      
+  7654 MARTIN     SALESMAN    7698 81/09/28      1250    1400     30                                                                                                                                                                                      
+  7698 BLAKE      MANAGER     7839 81/05/01      2850             30                                                                                                                                                                                      
+  7782 CLARK      MANAGER     7839 81/06/09      2450             10                                                                                                                                                                                      
+  7788 SCOTT      ANALYST     7566 87/04/19      3000             20                                                                                                                                                                                      
+  7839 KING       PRESIDENT        81/11/17      5000             10                                                                                                                                                                                      
+  7844 TURNER     SALESMAN    7698 81/09/08      1500       0     30                                                                                                                                                                                      
+  7876 ADAMS      CLERK       7788 87/05/23      1100             20                                                                                                                                                                                      
+  7900 JAMES      CLERK       7698 81/12/03       950             30                                                                                                                                                                                      
+  7902 FORD       ANALYST     7566 81/12/03      3000             20                                                                                                                                                                                      
+  7934 MILLER     CLERK       7782 82/01/23      1300             10                                                                                                                                                                                      
+
+14 rows selected.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal < any
+  4   (select sal from emp
+  5   where deptno = 30);
+
+ENAME          SAL                                                                                                                                                                                                                                        
+---------- -------                                                                                                                                                                                                                                        
+SMITH          800                                                                                                                                                                                                                                        
+JAMES          950                                                                                                                                                                                                                                        
+ADAMS         1100                                                                                                                                                                                                                                        
+MARTIN        1250                                                                                                                                                                                                                                        
+WARD          1259                                                                                                                                                                                                                                        
+MILLER        1300                                                                                                                                                                                                                                        
+TURNER        1500                                                                                                                                                                                                                                        
+ALLEN         1600                                                                                                                                                                                                                                        
+CLARK         2450                                                                                                                                                                                                                                        
+
+9 rows selected.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > all (select sal from emp
+  4   where deptno = 30);
+
+ENAME          SAL                                                                                                                                                                                                                                        
+---------- -------                                                                                                                                                                                                                                        
+JONES         2975                                                                                                                                                                                                                                        
+SCOTT         3000                                                                                                                                                                                                                                        
+FORD          3000                                                                                                                                                                                                                                        
+KING          5000                                                                                                                                                                                                                                        
+
+SQL> select sal from emp
+  2   where deptno = 30
+  3  ;
+
+    SAL                                                                                                                                                                                                                                                   
+-------                                                                                                                                                                                                                                                   
+   1600                                                                                                                                                                                                                                                   
+   1259                                                                                                                                                                                                                                                   
+   1250                                                                                                                                                                                                                                                   
+   2850                                                                                                                                                                                                                                                   
+   1500                                                                                                                                                                                                                                                   
+    950                                                                                                                                                                                                                                                   
+
+6 rows selected.
+
+SQL> spool off

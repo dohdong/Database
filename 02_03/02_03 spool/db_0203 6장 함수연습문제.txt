@@ -1,0 +1,590 @@
+SQL> show spool
+spool ON
+SQL> select empno, ename
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1) , 5, '*') as masking_ename
+  4  from emp;
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+    *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> --Q1
+SQL> select empno, ename,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1) , 5, '*') as masking_ename
+  4  from emp;
+
+ EMPNO ENAME      MASKING_EMPNO                    MASKING_ENAME                                                                                                                                                                                          
+------ ---------- -------------------------------- ----------------------------------------                                                                                                                                                               
+  7369 SMITH      73**                             SMITH                                                                                                                                                                                                  
+  7499 ALLEN      74**                             ALLEN                                                                                                                                                                                                  
+  7521 WARD       75**                             WARD*                                                                                                                                                                                                  
+  7566 JONES      75**                             JONES                                                                                                                                                                                                  
+  7654 MARTIN     76**                             MARTI                                                                                                                                                                                                  
+  7698 BLAKE      76**                             BLAKE                                                                                                                                                                                                  
+  7782 CLARK      77**                             CLARK                                                                                                                                                                                                  
+  7788 SCOTT      77**                             SCOTT                                                                                                                                                                                                  
+  7839 KING       78**                             KING*                                                                                                                                                                                                  
+  7844 TURNER     78**                             TURNE                                                                                                                                                                                                  
+  7876 ADAMS      78**                             ADAMS                                                                                                                                                                                                  
+  7900 JAMES      79**                             JAMES                                                                                                                                                                                                  
+  7902 FORD       79**                             FORD*                                                                                                                                                                                                  
+  7934 MILLER     79**                             MILLE                                                                                                                                                                                                  
+
+14 rows selected.
+
+SQL> --Q1
+SQL> select empno, ename,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+  4  from emp;
+
+ EMPNO ENAME      MASKING_EMPNO                    MASKING_ENAME                                                                                                                                                                                          
+------ ---------- -------------------------------- ----------------------------------------                                                                                                                                                               
+  7369 SMITH      73**                             S****                                                                                                                                                                                                  
+  7499 ALLEN      74**                             A****                                                                                                                                                                                                  
+  7521 WARD       75**                             W****                                                                                                                                                                                                  
+  7566 JONES      75**                             J****                                                                                                                                                                                                  
+  7654 MARTIN     76**                             M****                                                                                                                                                                                                  
+  7698 BLAKE      76**                             B****                                                                                                                                                                                                  
+  7782 CLARK      77**                             C****                                                                                                                                                                                                  
+  7788 SCOTT      77**                             S****                                                                                                                                                                                                  
+  7839 KING       78**                             K****                                                                                                                                                                                                  
+  7844 TURNER     78**                             T****                                                                                                                                                                                                  
+  7876 ADAMS      78**                             A****                                                                                                                                                                                                  
+  7900 JAMES      79**                             J****                                                                                                                                                                                                  
+  7902 FORD       79**                             F****                                                                                                                                                                                                  
+  7934 MILLER     79**                             M****                                                                                                                                                                                                  
+
+14 rows selected.
+
+SQL> --Q1
+SQL> select empno,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  ename,
+  4  RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+  5  from emp;
+
+ EMPNO MASKING_EMPNO                    ENAME      MASKING_ENAME                                                                                                                                                                                          
+------ -------------------------------- ---------- ----------------------------------------                                                                                                                                                               
+  7369 73**                             SMITH      S****                                                                                                                                                                                                  
+  7499 74**                             ALLEN      A****                                                                                                                                                                                                  
+  7521 75**                             WARD       W****                                                                                                                                                                                                  
+  7566 75**                             JONES      J****                                                                                                                                                                                                  
+  7654 76**                             MARTIN     M****                                                                                                                                                                                                  
+  7698 76**                             BLAKE      B****                                                                                                                                                                                                  
+  7782 77**                             CLARK      C****                                                                                                                                                                                                  
+  7788 77**                             SCOTT      S****                                                                                                                                                                                                  
+  7839 78**                             KING       K****                                                                                                                                                                                                  
+  7844 78**                             TURNER     T****                                                                                                                                                                                                  
+  7876 78**                             ADAMS      A****                                                                                                                                                                                                  
+  7900 79**                             JAMES      J****                                                                                                                                                                                                  
+  7902 79**                             FORD       F****                                                                                                                                                                                                  
+  7934 79**                             MILLER     M****                                                                                                                                                                                                  
+
+14 rows selected.
+
+SQL> --Q1
+SQL> select empno,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  where length(ename) >=5 and length(ename)< 6,
+  4  ename,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+  6  from emp;
+where length(ename) >=5 and length(ename)< 6,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  where length(ename) >=5 ,
+  4  where length(ename)< 6,
+  5  ename,
+  6  RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+  7  from emp;
+where length(ename) >=5 ,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  from emp,
+  4  where length(ename) >=5 ,
+  5  where length(ename)< 6,
+  6  ename,
+  7  RPAD(substr(ename,1,1) , 5, '*') as masking_ename;
+from emp,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  from emp,
+  4  where length(ename) >=5 ,
+  5  where length(ename)< 6,
+  6  ename,
+  7  RPAD(substr(ename,1,1) , 5, '*') as masking_ename;
+from emp,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  
+SQL> where length(ename) >= 5 ,
+SP2-0734: unknown command beginning "where leng..." - rest of line ignored.
+SQL> where length(ename)< 6,
+SP2-0734: unknown command beginning "where leng..." - rest of line ignored.
+SQL> ename,
+SP2-0042: unknown command "ename," - rest of line ignored.
+SQL> RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+SP2-0734: unknown command beginning "RPAD(subst..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> from emp;
+SP2-0042: unknown command "from emp" - rest of line ignored.
+SQL> 
+SQL> --Q1
+SQL> select empno, length(ename),
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  where length(ename) >= 5 and length(ename)< 6,
+  4  ename,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  6  from emp;
+where length(ename) >= 5 and length(ename)< 6,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  where ( length(ename) >= 5 and length(ename)< 6) ,
+  4  ename,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  6  from emp;
+where ( length(ename) >= 5 and length(ename)< 6) ,
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  where ( length(ename) >= 5 and length(ename)< 6)
+  4  ename,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  6  from emp;
+where ( length(ename) >= 5 and length(ename)< 6)
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  ename,
+  4  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  5  from emp,
+  6  where ( length(ename) >= 5 and length(ename)< 6) ;
+from emp,
+*
+ERROR at line 5:
+ORA-00936: missing expression 
+
+
+SQL> 
+SQL> --Q1
+SQL> select empno, length(ename),ename,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  4  from emp,
+  5  where ( length(ename) >= 5 and length(ename)< 6) ;
+from emp,
+*
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),ename,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  4  from emp
+  5  where ( length(ename) >= 5 and length(ename)< 6) ;
+from emp
+*
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> desc emp;
+ Name                                                                                                                                            Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------- -------- ------------------------------------------------------------------------------------------------
+ EMPNO                                                                                                                                           NOT NULL NUMBER(4)
+ ENAME                                                                                                                                                    VARCHAR2(10)
+ JOB                                                                                                                                                      VARCHAR2(9)
+ MGR                                                                                                                                                      NUMBER(4)
+ HIREDATE                                                                                                                                                 DATE
+ SAL                                                                                                                                                      NUMBER(7,2)
+ COMM                                                                                                                                                     NUMBER(7,2)
+ DEPTNO                                                                                                                                                   NUMBER(2)
+
+SQL> 
+SQL> select empno, length(ename),ename,
+  2  from emp
+  3  where ( length(ename) >= 5 and length(ename)< 6) ;
+from emp
+*
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select empno, length(ename),ename,
+  2  from emp
+  3  where length(ename) >= 5  ;
+from emp
+*
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select empno, length(ename),ename
+  2  from emp
+  3  where length(ename) >= 5  ;
+
+ EMPNO LENGTH(ENAME) ENAME                                                                                                                                                                                                                                
+------ ------------- ----------                                                                                                                                                                                                                           
+  7369             5 SMITH                                                                                                                                                                                                                                
+  7499             5 ALLEN                                                                                                                                                                                                                                
+  7566             5 JONES                                                                                                                                                                                                                                
+  7654             6 MARTIN                                                                                                                                                                                                                               
+  7698             5 BLAKE                                                                                                                                                                                                                                
+  7782             5 CLARK                                                                                                                                                                                                                                
+  7788             5 SCOTT                                                                                                                                                                                                                                
+  7844             6 TURNER                                                                                                                                                                                                                               
+  7876             5 ADAMS                                                                                                                                                                                                                                
+  7900             5 JAMES                                                                                                                                                                                                                                
+  7934             6 MILLER                                                                                                                                                                                                                               
+
+11 rows selected.
+
+SQL> --Q1
+SQL> select empno, length(ename),ename
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  4  from emp
+  5  where ( length(ename) >= 5 and length(ename)< 6) ;
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+    *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> 
+SQL> --Q1
+SQL> select empno, length(ename),ename
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  4  from emp,
+  5  where ( length(ename) >= 5 and length(ename)< 6) ;
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+    *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> --Q1
+SQL> select empno, length(ename),ename
+  2  where ( length(ename) >= 5 and length(ename)< 6),
+  3  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  4  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  5  from emp;
+where ( length(ename) >= 5 and length(ename)< 6),
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> --Q1
+SQL> select empno, length(ename), ename,
+  2  
+SQL> RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+SP2-0734: unknown command beginning "RPAD(subst..." - rest of line ignored.
+SQL> RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+SP2-0734: unknown command beginning "RPAD(subst..." - rest of line ignored.
+SQL> from emp
+SP2-0042: unknown command "from emp" - rest of line ignored.
+SQL> where ( length(ename) >= 5 and length(ename)< 6);
+SP2-0734: unknown command beginning "where ( le..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> --Q1
+SQL> select empno, length(ename), ename,
+  2  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  3  RPAD(substr(ename,1,1) , 5, '*') as masking_ename,
+  4  from emp
+  5  where ( length(ename) >= 5 and length(ename)< 6);
+from emp
+*
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> --Q1
+SQL> select empno, length(ename), ename
+  2  from emp
+  3  where ( length(ename) >= 5 and length(ename)< 6),
+  4  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename;
+where ( length(ename) >= 5 and length(ename)< 6),
+                                                *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select empno, length(ename),ename
+  2  from emp
+  3  where  (length(ename) >= 5  and length(ename)< 6);
+
+ EMPNO LENGTH(ENAME) ENAME                                                                                                                                                                                                                                
+------ ------------- ----------                                                                                                                                                                                                                           
+  7369             5 SMITH                                                                                                                                                                                                                                
+  7499             5 ALLEN                                                                                                                                                                                                                                
+  7566             5 JONES                                                                                                                                                                                                                                
+  7698             5 BLAKE                                                                                                                                                                                                                                
+  7782             5 CLARK                                                                                                                                                                                                                                
+  7788             5 SCOTT                                                                                                                                                                                                                                
+  7876             5 ADAMS                                                                                                                                                                                                                                
+  7900             5 JAMES                                                                                                                                                                                                                                
+
+8 rows selected.
+
+SQL> --Q1
+SQL> select empno, length(ename), ename
+  2  from emp
+  3  where ( length(ename) >= 5 and length(ename)< 6)
+  4  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename;
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> --Q1
+SQL> select empno, length(ename), ename
+  2  from emp
+  3  where ( length(ename) >= 5 and length(ename)< 6) ,
+  4  RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+  5  RPAD(substr(ename,1,1) , 5, '*') as masking_ename;
+where ( length(ename) >= 5 and length(ename)< 6) ,
+                                                 *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select empno, ename, hiredate,comm
+  2  add_months(hiredate, 3) as a
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB
+  4  nvl(comm, N/A)
+  5  
+SQL> from emp;
+SP2-0042: unknown command "from emp" - rest of line ignored.
+SQL> select empno, ename, hiredate,comm
+  2  add_months(hiredate, 3) as a
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB
+  4  nvl(comm, N/A)
+  5  from emp;
+add_months(hiredate, 3) as a
+          *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  add_months(hiredate, 3) as a
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB
+  4  nvl(comm, N/A)
+  5  from emp;
+to_char(a, 'YYYY-MM-DD') as R_JOB
+*
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  add_months(hiredate, 3) as a,
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB,
+  4  nvl(comm, N/A),
+  5  from emp;
+from emp
+*
+ERROR at line 5:
+ORA-00936: missing expression 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  add_months(hiredate, 3) as a,
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB,
+  4  nvl(comm, N/A)
+  5  from emp;
+nvl(comm, N/A)
+            *
+ERROR at line 4:
+ORA-00904: "A": invalid identifier 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  add_months(hiredate, 3) as a,
+  3  to_char(a, 'YYYY-MM-DD') as R_JOB,
+  4  nvl(comm, 'N/A')
+  5  from emp;
+to_char(a, 'YYYY-MM-DD') as R_JOB,
+        *
+ERROR at line 3:
+ORA-00904: "A": invalid identifier 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  add_months(hiredate, 3) as plusdate,
+  3  to_char(plusdate, 'YYYY-MM-DD') as R_JOB,
+  4  nvl(comm, 'N/A')
+  5  from emp;
+to_char(plusdate, 'YYYY-MM-DD') as R_JOB,
+        *
+ERROR at line 3:
+ORA-00904: "PLUSDATE": invalid identifier 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  nvl(comm, 'N/A')
+  4  from emp;
+nvl(comm, 'N/A')
+          *
+ERROR at line 3:
+ORA-01722: invalid number 
+
+
+SQL> 
+SQL> select empno, ename, hiredate,comm,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  --nvl(comm, 'N/A')
+  4  from emp;
+from emp
+*
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> select empno, ename, hiredate,comm,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB
+  3  --nvl(comm, 'N/A')
+  4  from emp;
+
+ EMPNO ENAME      HIREDATE      COMM R_JOB                                                                                                                                                                                                                
+------ ---------- ---------- ------- --------------------                                                                                                                                                                                                 
+  7369 SMITH      80/12/17           1981-03-17                                                                                                                                                                                                           
+  7499 ALLEN      81/02/20       300 1981-05-20                                                                                                                                                                                                           
+  7521 WARD       81/02/22       500 1981-05-22                                                                                                                                                                                                           
+  7566 JONES      81/04/02           1981-07-02                                                                                                                                                                                                           
+  7654 MARTIN     81/09/28      1400 1981-12-28                                                                                                                                                                                                           
+  7698 BLAKE      81/05/01           1981-08-01                                                                                                                                                                                                           
+  7782 CLARK      81/06/09           1981-09-09                                                                                                                                                                                                           
+  7788 SCOTT      87/04/19           1987-07-19                                                                                                                                                                                                           
+  7839 KING       81/11/17           1982-02-17                                                                                                                                                                                                           
+  7844 TURNER     81/09/08         0 1981-12-08                                                                                                                                                                                                           
+  7876 ADAMS      87/05/23           1987-08-23                                                                                                                                                                                                           
+  7900 JAMES      81/12/03           1982-03-03                                                                                                                                                                                                           
+  7902 FORD       81/12/03           1982-03-03                                                                                                                                                                                                           
+  7934 MILLER     82/01/23           1982-04-23                                                                                                                                                                                                           
+
+14 rows selected.
+
+SQL> select empno, ename, hiredate,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB
+  3  comm,
+  4  nvl(comm, N/A)
+  5  from emp;
+comm,
+*
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select empno, ename, hiredate,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  comm,
+  4  nvl(comm, N/A)
+  5  from emp;
+nvl(comm, N/A)
+            *
+ERROR at line 4:
+ORA-00904: "A": invalid identifier 
+
+
+SQL> select empno, ename, hiredate,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  comm,
+  4  nvl(comm, 'N/A')
+  5  from emp;
+nvl(comm, 'N/A')
+          *
+ERROR at line 4:
+ORA-01722: invalid number 
+
+
+SQL> select empno, ename, hiredate,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  comm,
+  4  nvl(comm, "N/A")
+  5  from emp;
+nvl(comm, "N/A")
+          *
+ERROR at line 4:
+ORA-00904: "N/A": invalid identifier 
+
+
+SQL> select empno, ename, hiredate,
+  2  to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+  3  nvl(to_char(comm), 'N/A') as comm
+  4  from emp;
+
+ EMPNO ENAME      HIREDATE   R_JOB                COMM                                                                                                                                                                                                    
+------ ---------- ---------- -------------------- --------------------------------------------------------------------------------                                                                                                                        
+  7369 SMITH      80/12/17   1981-03-17           N/A                                                                                                                                                                                                     
+  7499 ALLEN      81/02/20   1981-05-20           300                                                                                                                                                                                                     
+  7521 WARD       81/02/22   1981-05-22           500                                                                                                                                                                                                     
+  7566 JONES      81/04/02   1981-07-02           N/A                                                                                                                                                                                                     
+  7654 MARTIN     81/09/28   1981-12-28           1400                                                                                                                                                                                                    
+  7698 BLAKE      81/05/01   1981-08-01           N/A                                                                                                                                                                                                     
+  7782 CLARK      81/06/09   1981-09-09           N/A                                                                                                                                                                                                     
+  7788 SCOTT      87/04/19   1987-07-19           N/A                                                                                                                                                                                                     
+  7839 KING       81/11/17   1982-02-17           N/A                                                                                                                                                                                                     
+  7844 TURNER     81/09/08   1981-12-08           0                                                                                                                                                                                                       
+  7876 ADAMS      87/05/23   1987-08-23           N/A                                                                                                                                                                                                     
+  7900 JAMES      81/12/03   1982-03-03           N/A                                                                                                                                                                                                     
+  7902 FORD       81/12/03   1982-03-03           N/A                                                                                                                                                                                                     
+  7934 MILLER     82/01/23   1982-04-23           N/A                                                                                                                                                                                                     
+
+14 rows selected.
+
+SQL> spool off
