@@ -1,0 +1,27 @@
+Q 1 : trunc , group by 이용
+
+select deptno, trunc(avg(sal)) as avg_sal , max(sal) as max_sal , min(sal) as min_sal , count(sal) as cnt
+from emp
+group by deptno;
+
+
+Q 2 : having 
+
+select job , count(*) 
+from emp
+group by job
+having count(*) >= 3; 
+
+
+Q 5 : to_char() , rollup() 
+
+select deptno, 
+to_char(hiredate, 'YYYY') as hire_year, 
+count(*) as cnt, 
+max(sal) as max_sal,
+sum(sal) as sum_sal,
+avg(sal) as avg_sal
+from emp
+group by rollup( deptno, to_char(hiredate,'YYYY')) ;
+
+

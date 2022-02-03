@@ -1,0 +1,217 @@
+내장 함수의 종류 -> 단일행 함수, 다중행 함수
+
+6장은 함수가 다 나옴. 재미 없음. 
+
+--ex 6-1 upper, lower, initcap
+select ename, upper(ename), lower(ename), initcap(ename)
+from emp;
+
+--ex 6-2 정확하게 일치할때는 2번,
+select *
+from emp
+where upper(ename) = upper('scott');
+
+--ex 6-3 scott 포함된 데이터 찾기, 문자열에 포함된 것을 찾기위해서는 3번을 활용.
+select *
+from emp
+where upper(ename) like upper('%scott%');
+
+-- ex 6-5 length 단순한 길이파악
+select ename, length(ename)
+from emp
+where length(ename) >= 5 ;
+
+--ex 6-6 우리가 알아야할 내용
+select length('한글'), lengthb('한글')
+from dual;
+
+--ex 6-7 문자열 일부를 추출하는 substr 함수, 
+--(ㅇㅇ, 1, 2) 는 ㅇㅇ에서 1부터 시작해서 2개를 가져온다.
+--오라클은 인덱스가 1부터 시작한다.
+select job, substr(job,1,2), substr(job,3,2), substr(job,5)
+from emp;
+
+--ex 6-8  -length.
+select job,substr(job,-length(job)), substr(job,-length(job),2), substr(job,-3)
+from emp;
+
+--instr 특정문자 위치 찾기
+--ex 6-10 instr 함수
+select * 
+from emp
+where instr(ename, 'S') > 0;
+
+--ex 6-11 
+select * 
+from emp
+where ename like '%S%';
+
+-- [  ]  는 옵션이다. 써도 되고 안써도 됨.
+
+--ex 6-12 특정문자를 다른 문자로 대체
+select '010-1234-5678' as replace_before,
+replace('010-1234-5678' , '-' , ' ' ) as replace_1,
+replace('010-1234-5678', '-') as replace_2
+from dual;
+
+--ex 6-13 LPAD, RPAD 패드함수를 쓸떄는 전체 자릿수를 반드시 써주어야함. 
+--마치 주민번호같은것에서 뒷자리가 출력이 되지 않는 것 같은 느낌.
+select 'Oracle', 
+LPAD('Oracle', 10, '#') as lpad_1,
+RPAD('Oracle', 10, '*') as rpad_1, 
+LPAD('Oracle', 10) as lpad_2,
+RPAD('Oracle', 10) as rpad_2
+from dual;
+
+--ex 6-14 
+select 
+Rpad('971225-', 14, '*') as rpad_jmno,
+rpad('010-1234-', 13, '*') as rpad_phone
+from dual;
+
+--ex 6-15 문자열 데이터 합치기. 
+select concat(empno,ename),
+concat(empno, concat(' : ' , ename))
+from emp
+where ename = 'SCOTT' ;
+
+--ex 6-16 trim 함수로 공백 제거하여 출력하기.
+select 
+'[' || trim(' _ _ Oracle_ _ ') || ']' as trim,
+'[' || trim(LEADING FROM  ' _ _ Oracle_ _ ') || ']' as trim_leading,
+'[' || trim(TRAILING FROM ' _ _ Oracle_ _ ') || ']' as trim_trailing,
+'[' || trim(BOTH FROM' _ _ Oracle_ _ ') || ']' as trim_both
+from dual;
+
+--ex 6-17 특정문자 삭제
+select 
+'[' || trim('_' from '_ _ Oracle_ _') || ']' as trim,
+'[' || trim(LEADING '_' FROM  '_ _ Oracle_ _') || ']' as trim_leading,
+'[' || trim(TRAILING '_' FROM '_ _ Oracle_ _') || ']' as trim_trailing,
+'[' || trim(BOTH '_' FROM'_ _ Oracle_ _') || ']' as trim_both
+from dual;
+
+select 
+'[' || trim('_' from '__Oracle__') || ']' as trim
+from dual;
+
+--숫자 함수 round 반올림, trunc 버림. ceil올림, floor내림, mod나머지
+
+--ex 6-19 Round 반올림. 은행같은 곳에서 돈을 지급할때는 -1 단위를 쓴다.
+select 
+round(1234.5678) as round,
+round(1234.5678, 0) as round_0,
+round(1234.5678, 1) as round_1,
+round(1234.5678, 2) as round_2,
+round(1234.5678, -1) as round_minus1,
+round(1234.5678, -2) as round_minus2
+from dual;
+
+
+--ex 6-20 trunc
+select 
+trunc(1234.5678) as trunc,
+trunc(1234.5678, 0) as trunc_0,
+trunc(1234.5678, 1) as trunc_1,
+trunc(1234.5678, 2) as trunc_2,
+trunc(1234.5678, -1) as trunc_minus1,
+trunc(1234.5678, -2) as trunc_minus2
+from dual;
+
+
+--ex 6-24 몇개월 후의 날짜를 구하는 add_months 함수
+select sysdate,
+	add_months(sysdate,3)
+from dual;
+
+--ex 6-25
+select empno, ename, hiredate,
+	add_months(HIREDATE, 120) as work10year
+from emp;
+
+-- '100'+empno 를 하면 숫자 100을 더해줌.
+
+--ex 6-33 날짜 표현
+select to_char(sysdate, 'YYYY/MM/DD HH24:MI:SS') as 현재날짜시간
+from dual;
+
+select to_char(sysdate, 'YYYY/MM/DD HH12:MI:SS AM') as HH_AM
+from dual;
+
+
+--ex 6-38 숫자 출력
+select sal,
+	to_char(sal, '$999,999') as sal_$,
+	to_char(sal, 'L999,999') as sal_L,
+	to_char(sal, '999,999.00') as sal_1,
+	to_char(sal, '000,999,999') as sal_2,
+	to_char(sal, '999,999,00') as sal_3
+from emp;
+
+
+--ex 6-42 to_number 함수로 연산하여 출력하기
+select 
+to_date('2018-07-14', 'YYYY-MM-DD') as todate1,
+to_date('20180714', 'YYYY-MM-DD') as todate2
+from dual;
+
+--ex 6-43 
+select *
+from emp
+where hiredate>to_date('1981/06/01', 'YYYY/MM/DD') ;
+
+
+--ex 6-45 
+--nvl : null 일때만 특정값으로 출력하는 함수
+select empno, ename, sal, comm, sal+comm,
+nvl(comm,0),
+sal+nvl(comm, 0)
+from emp;
+
+
+--ex 6-46 
+select empno, ename, comm,
+nvl2(comm, 'o', 'x'),
+nvl2(comm, sal*12+comm, sal*12) as annsal
+from emp;
+
+
+--ex 6-47
+select empno,ename,job,sal,
+decode(job,
+'MANAGER', sal*1.1,
+'SALESMAN', sal*1.05,
+'ANALYST' , sal, sal*1.03) as upsal
+from emp;
+
+-- 오라클에서는 if 문 보다 case 문이 훨씬 더 할 수 있는게 많고 범위가 넓다.
+--ex 6-48
+select empno,ename,job,sal,
+case JOB
+ when 'MANAGER' then sal*1.1
+ when 'SALESMAN' then sal*1.05
+ when 'ANALYST' then sal
+ else sal*1.03
+end as upsal
+from emp;
+
+
+--ex 6-49 범위를 지정할수도 있음. case가 더 포괄적임 ㅇㅇ
+select empno, ename, comm,
+  case 
+   when comm is null then '해당사항 없음'
+   when comm = 0 then '수당없음'
+   when comm > 0 then '수당 : ' || comm
+  end as comm_text
+from emp;
+
+
+
+
+
+
+
+
+
+
+

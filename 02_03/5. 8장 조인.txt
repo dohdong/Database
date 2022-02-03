@@ -1,0 +1,108 @@
+8장 하기 전에 서브 쿼리 
+
+Q 1 JONES와 같은 부서에 근무하는 사원들의 부서번호, 사원번호, 이름, 급여를 구하여라.
+
+select deptno
+from emp
+where ename = 'JONES';
+
+select deptno, empno, ename, sal
+from emp
+where deptno = (
+  select deptno
+  from emp
+  where ename = 'JONES');
+
+Q 2 JONES와 같은 직무를 가진 사원들의 이름과 직무를 구하여라.
+
+select job
+from emp
+where ename = 'JONES';
+
+select ename, job
+from emp
+where job = (
+  select job
+  from emp
+  where ename = 'JONES');
+
+Q 3 ‘CLARK’ 보다 급여를 많이 받는 사원의 이름과 직무를 구하여라. 
+
+select ename, job
+from emp
+where sal >(
+select sal
+from emp
+where ename ='CLARK');
+
+Q 4 사원 전체의 평균 급여보다 급여가 적은 사원들의 이름과 급여를 구하여라.
+
+select ename, sal
+from emp
+where sal <
+ (select avg(sal)
+ from emp); 
+
+
+Q 5 emp 테이블에서 부서번호 30인 사원들의 평균급여보다 
+평균급여가 큰 부서의 부서번호와 평균 급여를 구하여라
+-- having... 사용을 잘 알아두자.
+
+select deptno, avg(sal)
+from emp
+group by deptno
+having avg(sal) >
+ (select avg(sal)
+ from emp
+ where deptno = 30);
+
+Q 6  부서별로 제일 먼저 나오는 사원이름을 출력
+-- = 연산자는 단일행 서브쿼리 연산자임. 
+-- 그래서 아래가 에러가 생김.
+select ename, sal, deptno
+from emp
+where ename in
+ (select min(ename)
+   from emp
+   group by deptno );
+
+select min(ename)
+   from emp
+   group by deptno;
+
+Q 7  부서번호가 30번인 사원들의 급여 중 가장 낮은 값보다 높은 급여를 받는 사원의
+이름, 급여를 구하세요. (최소값보다 큰 거 : > any) (최대값보다 작은거 : < any 인듯) 
+
+select ename, sal
+from emp
+where sal > any
+ (select sal from emp
+ where deptno = 30);
+
+select ename, sal
+from emp
+where sal < any
+ (select sal from emp
+ where deptno = 30);
+
+
+Q 8 부서번호가 30번인 사원들의 급여 중 가장 높은 값보다 더 많은 급여를 받는 사원의
+이름, 급여를 구하세요.
+
+select ename, sal
+from emp
+where sal > all 
+(select sal from emp
+ where deptno = 30);
+
+
+
+
+
+
+
+
+
+
+
+

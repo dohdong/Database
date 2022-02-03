@@ -1,0 +1,50 @@
+-- 마지막 잊기전에 한번더 
+-- Q1 를 풀기위해서는 함수를 2개를 써서 해결해야한다.
+select empno,
+RPAD(substr(empno,1,2),4,'*') as masking
+from emp;
+
+--Q1
+select empno,
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+ ename,
+RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+from emp
+where ( length(ename) >= 5 and length(ename)< 6) ;
+
+length(ename)을 쓰지 않아야 된다라... 허허...
+
+
+-- 이건 되는데 RPAD 가 포함되니까 안됨. 뭐지 어떻게 하지.
+select empno, length(ename),ename
+from emp
+where  (length(ename) >= 5  and length(ename)< 6);
+
+select empno, ename,
+RPAD(substr(empno,1,2) , 4, '*') as masking_empno,
+RPAD(substr(ename,1,1) , 5, '*') as masking_ename
+from emp;
+
+
+--모르겠다.. 흠..
+
+Q 3 
+
+select empno, ename, hiredate,
+to_char(add_months(hiredate, 3), 'YYYY-MM-DD') as R_JOB,
+nvl(to_char(comm), 'N/A') as comm
+from emp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
