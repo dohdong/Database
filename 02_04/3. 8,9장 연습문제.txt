@@ -1,0 +1,115 @@
+
+
+연습문제 
+Q 1 이름이 'ALLEN' 인 사원의 부서이름을 출력하여라.
+select e.ename,d.dname
+from emp e, dept d
+where e.deptno = d.deptno
+and e.ename = (
+select ename
+from emp
+where ename = 'ALLEN');
+
+
+Q 2 직무가 'ANALYST'인 어떤 사원보다 급여가 적으면서, 직무가 'ANALYST' 가 아닌 사원들의 
+사원번호, 이름, 직무, 급여 를 출력하여라.
+-- 직무가 아닌 사원들은 못함.. 흠..
+
+select deptno, ename, job, sal 
+from emp
+where sal < all (
+select sal
+from emp 
+where job = 'ANALYST' )
+and job != 'ANALYST';
+
+
+select deptno, ename, job, sal 
+from emp
+where sal < (
+select min(sal)
+from emp 
+where job = 'ANALYST' )
+and job != 'ANALYST';
+
+
+Q 3 부서이름이 'SALES' 인 사원들의 평균 급여보다 급여가 많고, 부서이름이 'RESEARCH'인 사원들의 평균 
+급여보다 급여가 적은 사원들의     이름, 부서번호, 급여, 직무 를 출력하여라.
+
+select ename, deptno, sal, job
+from emp
+where sal>
+  (select avg(sal) 
+  from emp
+  where deptno=
+     (select deptno from dept where dname='SALES'))
+and sal<
+  (select avg(sal) 
+  from emp
+  where deptno=
+     (select deptno from dept where dname='RESEARCH'));
+
+얘는 서브쿼리도 되고, 조인도 된다. 그런데 무조건 해당되는것을 순차적으로 구해야할때는 서브쿼리를 써야함.
+
+
+--between 으로도 가능.
+select e.ename, e.deptno, e.sal, e.job
+from emp e, dept d
+where e.deptno = d.deptno
+and 
+sal between (select avg(sal) from emp e,dept d where e.deptno = d.deptno and d.dname='SALES') 
+and
+(select avg(sal) from emp e,dept d where e.deptno = d.deptno and d.dname='RESEARCH');
+
+
+
+Q 4  'FORD' 와 부서가 같은 사원들의 이름, 부서이름, 직무, 급여를 출력하여라.
+
+select e.ename, d.dname, e.job, sal
+from emp e, dept d
+where e.deptno = d.deptno
+and e.deptno = 
+  (select deptno 
+   from emp
+   where ename = 'FORD') ;
+
+
+
+
+Q 5 각 부서별 부서 번호(모든 부서에 대해서) , 부서 이름, 부서위치, 사원의 수 를 출력하여라.
+-- group by 가 안되는데 뭐지.. 흠.. select 뒤에 전부 다 쳐줘야함. 
+
+select d.deptno , d.dname, d.loc, count(*) over(partition by d.deptno)
+from emp e, dept d 
+where e.deptno = d.deptno;
+
+
+
+-- right outer join 이다~
+select d.deptno, d.dname, d.loc, count(ename)
+from emp e, dept d
+where e.deptno(+)=d.deptno
+group by d.deptno, d.dname, d.loc;
+
+
+
+
+select deptno, d.dname, d.loc, count(*)
+from emp e natural join dept d
+group by deptno, d.dname, d.loc;
+
+
+
+
+Q 6 전체 사원의 평균 급여보다 급여가 많은 사원의 사원번호, 이름, 부서이름, 입사일, 부서위치, 급여를 출력하여라.
+
+select e.deptno, e.ename, d.dname , e.hiredate, d.loc, e.sal
+from emp e , dept d
+where e.deptno = d.deptno
+and sal >
+ ( select avg(sal) from emp ) ;
+
+
+
+
+

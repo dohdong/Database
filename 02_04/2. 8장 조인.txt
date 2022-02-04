@@ -1,0 +1,86 @@
+
+-- join
+--8-1 : from 절에 여러개 테이블 선언
+select *
+from emp, dept
+order by empno;
+
+--8-2 : 열 이름을 비교하는 조건식으로 조인하기
+-- 조인할때는 외래키를 같게해야한다. 외래키를 확실히 알아야한다.
+select *
+from emp, dept
+where emp.deptno = dept.deptno
+order by empno;
+
+--8-3 : 테이블 별칭설정
+select *
+from emp e, dept d
+where e.deptno= d.deptno
+order by empno;
+
+-- join 실습  : scott의 부서와 같은 부서 번호를 갖는 사원의 이름, 부서번호, 부서이름을 구하세요
+select e.ename, e.deptno,d.dname
+from emp e, dept d
+where e.deptno = d.deptno
+and e.deptno = (
+select deptno
+from emp
+where ename = 'SCOTT');
+
+--8-7
+select *
+from emp e, salgrade s
+where e.sal between s.losal and s.hisal;
+
+--이렇게 하면 40번이 나오지 않음.
+select e.ename, d.deptno, d.dname
+from emp e, dept d
+where e.deptno = d.deptno; 
+-- outer 조인에서는 뒤에있는 d를 가져와서 써주어야 나옴
+select e.ename, d.deptno, d.dname
+from emp e, dept d
+where e.deptno(+) = d.deptno; 
+
+--e.deptno로 하면 잘 안됨.
+select e.ename, e.deptno, d.dname
+from emp e, dept d
+where e.deptno(+) = d.deptno; 
+
+
+--left outer join : 기준이 왼쪽 테이블
+--직원의 매니저를 출력
+-- from emp, emp 로 할수없으니 allias 를 줘서 from emp e1, emp e2 로 된다.
+
+select e1.ename , e2.ename
+from emp e1, emp e2
+where e1.mgr = e2.empno;
+
+--위와 같이 하면 잘 나옴. 근데 king 이 안나옴 그러므로 outer 조인을 해주어야한다. 
+--이것이 left outer join
+select e1.ename , e2.ename
+from emp e1 left outer join emp e2
+on e1.mgr = e2.empno;
+
+--이것이 right outer join 은 아닌가?
+select e1.ename , e2.ename
+from emp e1 right outer join emp e2
+on e1.mgr = e2.empno;
+
+select e.ename, d.deptno, d.dname
+from emp e right outer join dept d
+on e.deptno = d.deptno;
+
+
+select e1.ename || '의 매니저는 ' || e2.ename || '이다.'
+from emp e1, emp e2
+where e1.mgr = e2.empno;
+
+
+
+
+
+
+
+
+
+

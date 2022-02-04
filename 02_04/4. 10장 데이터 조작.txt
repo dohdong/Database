@@ -1,0 +1,120 @@
+--10-1 
+create table dept_temp
+as select * from dept;
+
+
+--table 삭제
+drop table 테이름 cascade constraints;  
+--라고 쓰면 무조건 삭제가 됨.
+drop table dept;
+-- dept는 emp의 부모테이블이므로 삭제시킬수없음.
+
+
+--10-3
+insert into dept_temp (deptno, dname, loc)
+values(10,'DATABASE', 'SEOUL');
+
+--★★★★ 테이블을 copy하면 제약사항은 복사가 안됨.  ★★★★
+--	 데이터만 복사해온다. 튜플만 복사해온다. 다른 제약사항들은 복사가 안됨.
+
+--undo : rollback; 시켜서 되돌린다.
+
+select * from dept_temp;
+-- null 데이터 넣는법.
+--10-5 얘를 제일 추천함!
+insert into dept_temp (deptno, dname, loc)
+	values(70, 'WEB' ,null) ;
+--10-6
+insert into dept_temp (deptno, dname, loc)
+	values(80, 'MOBILE', ' ');
+--10-7
+insert into dept_temp(deptno,loc)
+	values (90, 'INCHEON') ;
+
+
+--10-8  -- where 1 <> 1  은 false 니까 이렇게 빈 테이블을 만들어낸다.
+create table emp_temp
+	as select *
+	   from emp
+	 where 1 <> 1;
+
+
+--함수를 써서 입력하는것
+select * from emp_temp;
+--10-12
+insert into emp_temp( empno, ename, job, mgr, hiredate, sal, comm, deptno)
+	values (2111, '이순신' , 'MANAGER', 9999, to_date('07/01/2001', 'DD/MM/YYYY' ), 4000, null, 20);
+
+-- insert 할때 모든 항목을 다 넣어주면 emp_temp ( ~~ 여기는 안써줘도 됨) 
+--10-13 
+insert into emp_temp
+	values ( 3111, '심청이' , 'MANAGER', 9999, sysdate, 4000, null,30);
+--10-14
+insert into emp_temp( empno, ename, job, mgr, hiredate, sal, comm, deptno)
+select e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, e.comm, e.deptno
+from emp e, salgrade s
+where e.sal between s.losal and s.hisal
+and s.grade = 1;
+
+
+--10-15
+create table dept_temp2
+as select * from dept;
+
+--DML 만 rollback 이 된다. DDL은 안됨.
+
+select * from dept_temp2;
+--10-18 
+update 테이름
+set 바꿀 값
+where 조건;
+
+update dept_temp2
+set dname = 'DATABASE' , loc = 'SEOUL'
+where deptno = 40;
+
+
+--10-19 서브쿼리로도 업데이트가 가능함.
+update dept_temp2
+set(dname,loc) = 
+ (select dname, loc
+  from dept
+  where deptno = 40)
+where deptno = 40;
+
+
+--10-21
+update dept_temp2
+set loc = 'SEOUL'
+where deptno = (select deptno 
+	from dept_temp2
+	where dname = 'OPERATIONS');
+
+select * from emp_temp2;
+--10-22
+create table emp_temp2
+ as select * from emp;
+
+--10-23
+delete from 테이름
+where 조건;
+
+delete from emp_temp2
+where job = 'MANAGER';
+
+--10-24 
+delete from emp_temp2
+where empno in
+ (select e.empno
+  from emp_temp2 e, salgrade s
+  where e.sal between s.losal and s.hisal
+  and s.grade = 3
+  and deptno = 30) ;
+
+--10-25
+delete from emp_temp2;
+
+
+
+
+

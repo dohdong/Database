@@ -1,0 +1,43 @@
+
+잊기전에 한번더 
+
+create table chap10hw_emp as select * from emp;
+create table chap10hw_dept as select * from dept;
+create table chap10hw_salgrade as select * from salgrade;
+
+
+select * from chap10hw_emp;
+
+Q 3  20번부서에서 근무하는 사원들의 평균 급여보다 많은 급여를 받고있는 사람들을 30번 부서로 옮겨라.
+
+update chap10hw_emp 
+set deptno = 30
+where sal > (
+  select avg(sal)
+  from chap10hw_emp 
+  where deptno = 20 ) ;
+
+
+Q 4 30번 부서에 사원중에 입사일이 가장 빠른사원보다 늦게 입사한 사원의 급여를 10% 인상하고, 
+20번 부서로 옮겨라.
+
+update chap10hw_emp 
+    set sal = sal * 1.1, deptno = 20
+  where hiredate > (select min(hiredate)
+		from chap10hw_emp 
+		where deptno = 30 );
+
+
+
+
+-- 10-4
+UPDATE CHAP10HW_EMP
+   SET SAL = SAL*1.1,
+       DEPTNO = 80
+ WHERE HIREDATE > (SELECT MIN(HIREDATE)
+                     FROM CHAP10HW_EMP
+                    WHERE DEPTNO = 60);
+
+
+
+
