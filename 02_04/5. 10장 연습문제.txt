@@ -29,15 +29,3 @@ update chap10hw_emp
 
 
 
-
--- 10-4
-UPDATE CHAP10HW_EMP
-   SET SAL = SAL*1.1,
-       DEPTNO = 80
- WHERE HIREDATE > (SELECT MIN(HIREDATE)
-                     FROM CHAP10HW_EMP
-                    WHERE DEPTNO = 60);
-
-
-
-
