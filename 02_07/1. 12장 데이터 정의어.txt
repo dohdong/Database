@@ -1,0 +1,73 @@
+--12-1 create
+create table emp_ddl
+ (  EMPNO                         NUMBER(4),
+ ENAME                            VARCHAR2(10),
+ JOB                             VARCHAR2(9),
+ MGR                            NUMBER(4),
+ HIREDATE                   DATE,
+ SAL                            NUMBER(7,2),
+ COMM                       NUMBER(7,2),
+ DEPTNO                   NUMBER(2)  );
+
+--12-2 아래와 같이 가져가면 제약사항은 가져가지 않고, 내용과 구조만 가져감.
+create table dept_ddl
+as select * from dept;
+
+--12-4  30번인 직원들만 따로 table 만들기도 역시 쉽다.
+create table emp_ddl_30
+as select * from emp
+where deptno = 30;
+
+--12-6
+create table emp_alter
+as select * from emp;
+
+select * from emp_alter;
+
+--12-7 hp열 추가
+alter table emp_alter
+add hp varchar2(20);
+
+--12-8 방금 추가한 hp열 이름변경
+alter table emp_alter
+rename column hp to tel;
+
+--12-9 열 길이 변경
+alter table emp_alter
+modify empno number(5);
+
+--12-10 삭제
+alter table emp_alter
+drop column tel;
+
+--12-11
+rename a to b; 
+rename emp_alter to emp_rename;
+
+--delete(DML : rollback 이 가능하므로 delete를 쓰는게 나아보인다.), truncate(DDL : rollback 불가) 로 서로다름.
+--12-14
+truncate table emp_rename;
+--delete
+delete from emp;
+
+--12-15 table을 삭제할때는 drop table 이다!
+drop table emp_rename;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,184 @@
+--데이터 사전 = (327p) 접두어가 USER_ , ALL_ , DBA_ , V$ 와 같은 녀석들임.
+--13-1
+select * from dict;
+
+--13-3 그간 작성한 table_name 이 쭈욱 나옴.
+select table_name
+from user_tables;
+
+desc user_tables;
+
+--13-4 
+select owner, table_name
+from all_tables;
+
+--13-5 
+select * from dba_tables;
+-- 에러가 나온다. 관리권한을 가진 사용자가 조회 가능하므로 system 으로 접속해서 확인해야함. conn sys
+
+--13-7 아래 역시 system 계정으로 접속해야함.
+select * from dba_users
+where username = 'SCOTT' ; 
+
+
+
+--인덱스 ( 비고유 , 고유 ) 
+--인덱스 하기위한 카피
+create table emp_copy
+as select * from emp;
+--인데스를 활용해서 시간비교도 된다. 근데 우리는 데이터가 얼마없어서 큰차이x
+--5만개 데이터를 계속 넣어서 하면 좀 차이가 난다.
+
+--타이머 설정방법
+set timing on;
+show timing
+
+
+select ename
+from emp_copy;
+
+insert into emp_copy
+select * from emp;
+
+--13-8 비고유 인덱스를 만든 것임.
+create index 이름 
+on 테이름(필드명) ;
+
+create index emp_copy_index
+on emp_copy(ename);
+--확인하는법
+select index_name, table_name
+from user_ind_columns
+where table_name in ('EMP_COPY');
+
+--고유 인덱스
+create unique index 이름
+on 테이름(필드명) ;
+-- job 은 직무가 유니크하지 않으므로 유니크 인덱스를 만들수없고, 그냥 인덱스만 가능하다.
+create unique index emp_copy_job_index
+on emp_copy(job);
+
+--인덱스 삭제
+drop index emp_copy_index;
+
+--★뷰 는 좀 알아야함.
+--뷰 생성
+create view VW_emp20
+ as (select empno, ename, job, deptno
+     from emp
+     where deptno = 20 );
+
+--권한이 없음.. 그래서 system 계정으로 가야함
+conn system
+password : manager
+
+
+--view 생성 권한부여 (scott에게)  (이것이 DCL , 권한을 제어하는 명령) 
+--sys
+grant create view to scott;
+--권한을 회수할때는 
+revoke create view from scott;
+
+
+--scott
+drop table emp_copy;
+
+create table emp_copy 
+as select * from emp;
+
+
+select empno, ename, deptno
+from emp_copy
+where deptno = 30;
+-- 이렇게 하면 6명의 데이터가 나오는데 이 데이터를 내가 자주봐야한다. 그러면 view로 만들어서 보는것.
+
+create view 뷰이름
+as select ~~
+
+create view emp_view_dept30
+as 
+select empno, ename, deptno
+from emp_copy
+where deptno = 30;
+
+--
+desc emp_view_DEPT30;
+--
+desc user_views;
+
+select view_name, text, read_only
+from user_views
+where view_name in ('EMP_VIEW_DEPT30' );
+
+--
+insert into emp_view_dept30
+values(1111,'park',30);
+--
+create view emp_view_dept
+as 
+select empno, ename, sal, e.deptno, dname, loc 
+from emp e, dept d
+where e.deptno = d.deptno;
+
+--view 를 만들어서 복잡한 쿼리를 아래와 같이 단순하게 확인할수있음.
+select ename, sal 
+from emp_view_dept;
+
+--그간 만든 view 보는법
+select view_name,text
+from user_views;
+
+drop view 뷰이름;
+drop view EMP_VIEW_DEPT30;
+
+--or replace : 뷰를 변경하거나 생성
+create or replace  view emp_view_dept30
+as
+select empno,sal,comm
+from emp_copy
+where deptno = 30;
+
+--with check option : 해당 필드만 변경 불가능  아까 insert 시키니까 원본도 바뀌는 그런 상황을 방지하고자 사용
+create view view_chk30
+as
+select empno, ename, sal, deptno
+from emp_copy
+where deptno = 30
+with check option;
+
+update view_chk30 --특정 필드, 여기서는 deptno 를 바꿀수 없다.
+set deptno = 20
+where sal > 1300;
+
+update view_chk30 -- 이렇게 바꾸면 원본테이블도 바뀐다.
+set sal = sal * 1.2
+where sal> 1300;
+update view_chk30
+set sal = 1000;
+
+select * from emp_copy;
+
+--with read only
+create view view_read30
+as
+select empno, ename, sal, comm, deptno
+from emp_copy
+where deptno = 30
+with read only;
+
+select * from view_read30;
+--읽기전용이라 변경할수없음.
+update view_read30
+set sal = sal * 1.2;
+
+
+drop view 이름;
+drop view view_read30;
+
+
+
+--그간 만든 view 보는법
+select view_name,text
+from user_views;
+
+
