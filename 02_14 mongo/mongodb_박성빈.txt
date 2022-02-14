@@ -1,0 +1,230 @@
+db.student.insertMany([
+{
+std_name : "Jack" , 
+sex : "Male" ,
+class : "VI" , 
+age : 11 , 
+grd_point : 33 },
+{
+std_name : "Jenny" , 
+sex : "Female" ,
+class : "VI" , 
+age : 13 , 
+grd_point : 30 },
+{
+std_name : "Thomas" , 
+sex : "Male" ,
+class : "V" , 
+age : 11 , 
+grd_point : 35.1257 },
+{
+std_name : "Lassy" , 
+sex : "Female" ,
+class : "X" , 
+age : 17 , 
+grd_point : 36.2514 },
+{
+std_name : "Mia" , 
+sex : "Female" ,
+class : "X" , 
+age : 19 , 
+grd_point : 35.5201 },
+{
+std_name : "Mike" , 
+sex : "Male" ,
+class : "V" , 
+age : 16 , 
+grd_point : 35.5201 }
+
+])
+
+
+◈ db.student.find( {class : "VI", sex : "Female" } )
+ 
+결과 : 
+{ "_id" : ObjectId("6209d529796fad11c5ca0eb0"), "std_name" : "Jenny", "sex" : "Female", "class" : "VI", "age" : 13, "grd_point" : 30 }
+
+
+◈ db.student.find( { class : "X", sex : "Female", grd_point : {$gt:31} } )
+
+결과 :
+{ "_id" : ObjectId("6209d529796fad11c5ca0eb2"), "std_name" : "Lassy", "sex" : "Female", "class" : "X", "age" : 17, "grd_point" : 36.2514 }
+{ "_id" : ObjectId("6209d529796fad11c5ca0eb3"), "std_name" : "Mia", "sex" : "Female", "class" : "X", "age" : 19, "grd_point" : 35.5201 }
+
+
+
+
+
+*************** 2번째.
+
+db.student.find().pretty()
+
+-- 필요없는 컬럼 지우고
+db.student.update( {} , { $unset : { grd_point : 1 } },{multi : true} )
+
+-- Many 로 안되서 One 으로 하나씩 업데이트 함.
+db.student.updateOne( 
+{ std_name : "Jack" } , { $set :  { "Total_marks" : 303 , "Result" : "Pass" } } ) 
+db.student.updateOne( 
+{ std_name : "Jenny" } , { $set :  { "Total_marks" : 800 , "Result" : "Pass" } } ) 
+db.student.updateOne( 
+{ std_name : "Thomas" } , { $set :  { "Total_marks" : 200 , "Result" : "Fail" } } ) 
+db.student.updateOne( 
+{ std_name : "Lassy" } , { $set :  { "Total_marks" : 550 , "Result" : "Pass" } } ) 
+db.student.updateOne( 
+{ std_name : "Mia" } , { $set :  { "Total_marks" : 350 , "Result" : "Pass" } } ) 
+db.student.updateOne( 
+{ std_name : "Mike" } , { $set :  { "Total_marks" : 700 , "Result" : "Pass" } } ) 
+
+
+◈ db.student.find( { Total_marks : {$gt:400} } )
+
+결과 : 
+{ "_id" : ObjectId("6209db01796fad11c5ca0eb6"), "std_name" : "Jenny", "sex" : "Female", "class" : "VI", "age" : 13, "Total_marks" : 800, "Result" : "Pass" }
+{ "_id" : ObjectId("6209db01796fad11c5ca0eb8"), "std_name" : "Lassy", "sex" : "Female", "class" : "X", "age" : 17, "Total_marks" : 550, "Result" : "Pass" }
+{ "_id" : ObjectId("6209db01796fad11c5ca0eba"), "std_name" : "Mike", "sex" : "Male", "class" : "V", "age" : 16, "Total_marks" : 700, "Result" : "Pass" }
+
+
+◈ db.student.find( { age : { '$ne'  : 11 } } )
+
+결과 : 
+{ "_id" : ObjectId("6209db01796fad11c5ca0eb6"), "std_name" : "Jenny", "sex" : "Female", "class" : "VI", "age" : 13, "Total_marks" : 800, "Result" : "Pass" }
+{ "_id" : ObjectId("6209db01796fad11c5ca0eb8"), "std_name" : "Lassy", "sex" : "Female", "class" : "X", "age" : 17, "Total_marks" : 550, "Result" : "Pass" }
+{ "_id" : ObjectId("6209db01796fad11c5ca0eb9"), "std_name" : "Mia", "sex" : "Female", "class" : "X", "age" : 19, "Total_marks" : 350, "Result" : "Pass" }
+{ "_id" : ObjectId("6209db01796fad11c5ca0eba"), "std_name" : "Mike", "sex" : "Male", "class" : "V", "age" : 16, "Total_marks" : 700, "Result" : "Pass" }
+
+
+
+**************** 3번째.
+
+db.student1.insertMany([ 
+{
+"name" : "Mick",  
+           "Course" : "btech",  
+           "batch_year" : 2018,  
+           "language" : ["c++", "java", "python"],  
+           "personal_details" :   
+                     {  
+                      "Father_name" : "Jonny",  
+                      "phone_no" : 8895321456,  
+                      "age" : 23,  
+                      "gender" : "Male",  
+                      "City" : "NewYork",  
+                     }              
+} ,
+{
+"name" : "Zoya",  
+           "Course" : "BCA",  
+           "batch_year" : 2020,  
+           "language" : ["C#", "JavaScript"],  
+           "personal_details" :   
+                     {  
+                      "Father_name" : "Henry",  
+                      "phone_no" : 9874563698,  
+                      "age" : 20,  
+                      "gender" : "Female",  
+                      "City" : "London",  
+                     }  
+}  ,
+{
+"name" : "Jonny",  
+           "Course" : "MCA",  
+           "batch_year" : 2019,  
+           "language" : ["C#", "java", "PHP"],  
+           "personal_details" :   
+                     {  
+                      "Father_name" : "Thomas",  
+                      "phone_no" : 7845123698,  
+                      "age" : 24,  
+                      "gender" : "Male",  
+                      "City" : "London",  
+                     }            
+}  ,
+{
+"name" : "Oliver",  
+           "Course" : "BA",  
+           "batch_year" : 2017,  
+           "language" : ["c", "PHP"],  
+           "personal_details" :   
+                     {  
+                      "Father_name" : "William",  
+                      "phone_no" : 9997845123,  
+                      "age" : 25,  
+                      "gender" : "Male",  
+                      "City" : "Liverpool",  
+                     }             
+}  ,
+{
+"name" : "Mia",  
+           "Course" : "btech",  
+           "batch_year" : 2020,  
+           "language" : ["HTML", "CSS", "PHP"],  
+           "personal_details" :   
+                     {  
+                      "Father_name" : "Leo",  
+                      "phone_no" : 6312547896,  
+                      "age" : 22,  
+                      "gender" : "Female",  
+                      "City" : "Manchester",  
+                     }             
+}  
+])
+
+
+◈ db.student1.find( {$or : [ { Course : "MCA" } ,{ batch_year: 2018 } ] } )
+
+결과 : 
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec1"), "name" : "Mick", "Course" : "btech", "batch_year" : 2018, "language" : [ "c++", "java", "python" ], "personal_details" : { "Father_name" : "Jonny", "phone_no" : 8895321456, "age" : 23, "gender" : "Male", "City" : "NewYork" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec3"), "name" : "Jonny", "Course" : "MCA", "batch_year" : 2019, "language" : [ "C#", "java", "PHP" ], "personal_details" : { "Father_name" : "Thomas", "phone_no" : 7845123698, "age" : 24, "gender" : "Male", "City" : "London" } }
+
+
+◈ db.student1.find( {$or : [ { "personal_details.age" : 20  } ,{ "personal_details.City" : "London" } ] } )
+
+결과:
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec2"), "name" : "Zoya", "Course" : "BCA", "batch_year" : 2020, "language" : [ "C#", "JavaScript" ], "personal_details" : { "Father_name" : "Henry", "phone_no" : 9874563698, "age" : 20, "gender" : "Female", "City" : "London" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec3"), "name" : "Jonny", "Course" : "MCA", "batch_year" : 2019, "language" : [ "C#", "java", "PHP" ], "personal_details" : { "Father_name" : "Thomas", "phone_no" : 7845123698, "age" : 24, "gender" : "Male", "City" : "London" } }
+
+
+◈ db.student1.find(  {$or : [ { language : "c++" },{ language : "java" } ,{ language : "python" }  ] } )
+
+결과 : 
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec1"), "name" : "Mick", "Course" : "btech", "batch_year" : 2018, "language" : [ "c++", "java", "python" ], "personal_details" : { "Father_name" : "Jonny", "phone_no" : 8895321456, "age" : 23, "gender" : "Male", "City" : "NewYork" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec3"), "name" : "Jonny", "Course" : "MCA", "batch_year" : 2019, "language" : [ "C#", "java", "PHP" ], "personal_details" : { "Father_name" : "Thomas", "phone_no" : 7845123698, "age" : 24, "gender" : "Male", "City" : "London" } }
+
+
+◈ db.student1.find( { "personal_details.City" : "London"  } )
+
+결과:
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec2"), "name" : "Zoya", "Course" : "BCA", "batch_year" : 2020, "language" : [ "C#", "JavaScript" ], "personal_details" : { "Father_name" : "Henry", "phone_no" : 9874563698, "age" : 20, "gender" : "Female", "City" : "London" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec3"), "name" : "Jonny", "Course" : "MCA", "batch_year" : 2019, "language" : [ "C#", "java", "PHP" ], "personal_details" : { "Father_name" : "Thomas", "phone_no" : 7845123698, "age" : 24, "gender" : "Male", "City" : "London" } }
+
+
+◈ 이름이 Mick, Zoya, Mia 인 학생의 pending_fees 를 12000으로 수정
+db.student1.updateOne( { name : "Mick" } , { $set :  { "pending_fees" : 12000 } } ) 
+db.student1.updateOne( { name : "Zoya" } , { $set :  { "pending_fees" : 12000 } } ) 
+db.student1.updateOne( { name : "Mia" } , { $set :  { "pending_fees" : 12000 } } ) 
+
+결과:
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec1"), "name" : "Mick", "Course" : "btech", "batch_year" : 2018, "language" : [ "c++", "java", "python" ], "personal_details" : { "Father_name" : "Jonny", "phone_no" : 8895321456, "age" : 23, "gender" : "Male", "City" : "NewYork" }, "pending_fees" : 12000 }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec2"), "name" : "Zoya", "Course" : "BCA", "batch_year" : 2020, "language" : [ "C#", "JavaScript" ], "personal_details" : { "Father_name" : "Henry", "phone_no" : 9874563698, "age" : 20, "gender" : "Female", "City" : "London" }, "pending_fees" : 12000 }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec3"), "name" : "Jonny", "Course" : "MCA", "batch_year" : 2019, "language" : [ "C#", "java", "PHP" ], "personal_details" : { "Father_name" : "Thomas", "phone_no" : 7845123698, "age" : 24, "gender" : "Male", "City" : "London" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec4"), "name" : "Oliver", "Course" : "BA", "batch_year" : 2017, "language" : [ "c", "PHP" ], "personal_details" : { "Father_name" : "William", "phone_no" : 9997845123, "age" : 25, "gender" : "Male", "City" : "Liverpool" } }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec5"), "name" : "Mia", "Course" : "btech", "batch_year" : 2020, "language" : [ "HTML", "CSS", "PHP" ], "personal_details" : { "Father_name" : "Leo", "phone_no" : 6312547896, "age" : 22, "gender" : "Female", "City" : "Manchester" }, "pending_fees" : 12000 }
+
+
+◈ db.student1.find( { $and : [ {"personal_details.age" : { '$ne'  : 22 } } , { "personal_details.City" : { '$ne'  : "London" } } ] } )
+
+결과:
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec1"), "name" : "Mick", "Course" : "btech", "batch_year" : 2018, "language" : [ "c++", "java", "python" ], "personal_details" : { "Father_name" : "Jonny", "phone_no" : 8895321456, "age" : 23, "gender" : "Male", "City" : "NewYork" }, "pending_fees" : 12000 }
+{ "_id" : ObjectId("6209e2a0796fad11c5ca0ec4"), "name" : "Oliver", "Course" : "BA", "batch_year" : 2017, "language" : [ "c", "PHP" ], "personal_details" : { "Father_name" : "William", "phone_no" : 9997845123, "age" : 25, "gender" : "Male", "City" : "Liverpool" } }
+
+
+
+
+
+
+
+
+
+.
+
